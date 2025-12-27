@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weekly Meal Plan</title>
+  <title>What's for Dinner?</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
     :root {
@@ -11,9 +11,6 @@
       --bg2: #6bafff;
       --bg3: #51ffae;
       --bg4: #ffc36b;
-      --breakfast: #ffc36b;
-      --lunch: #51ffae;
-      --dinner: #6bafff;
       --card-bg: rgba(255, 255, 255, 0.95);
       --card-shadow: rgba(0, 0, 0, 0.15);
     }
@@ -40,7 +37,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
@@ -54,243 +51,184 @@
     header h1 {
       font-size: 2.5rem;
       margin: 0 0 10px 0;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
+      font-weight: 700;
     }
 
     header p {
       font-size: 1.1rem;
       opacity: 0.95;
+      margin: 0;
     }
 
-    .card {
+    .refresh-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      color: #333;
+      margin: 0 auto 30px;
+      display: block;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .refresh-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      background: white;
+    }
+
+    .meal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .day-section {
       background: var(--card-bg);
       border-radius: 16px;
       padding: 25px;
-      margin-bottom: 25px;
       box-shadow: 0 8px 32px var(--card-shadow);
       backdrop-filter: blur(10px);
     }
 
-    .controls {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .controls button, .controls label {
-      background: white;
-      border: 2px solid #ddd;
-      padding: 12px 24px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: 600;
-      transition: all 0.3s;
-      color: #333;
-      height: 48px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .controls button:hover, .controls label:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      border-color: var(--bg2);
-    }
-
-    .controls input[type="file"] {
-      display: none;
-    }
-
-    .week-navigation {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .week-controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    #weekDisplay {
-      font-size: 1.3rem;
-      margin: 0;
-      color: #333;
-      flex: 1;
-      text-align: center;
-      min-width: 250px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .empty-slot-text {
-      color: #999;
-      font-size: 0.85rem;
-      font-style: italic;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-    }
-
-    @media (max-width: 768px) {
-      .calendar-grid {
-        grid-template-columns: 1fr;
-      }
-
-      header h1 {
-        font-size: 1.8rem;
-      }
-    }
-
-    .day-card {
-      background: white;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .day-card.today {
+    .day-section.today {
       border: 3px solid var(--bg3);
-      box-shadow: 0 4px 20px rgba(81, 255, 174, 0.3);
+      box-shadow: 0 8px 32px rgba(81, 255, 174, 0.3);
     }
 
     .day-header {
+      font-size: 1.5rem;
       font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 5px;
       color: #333;
+      margin: 0 0 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .today-badge {
+      background: var(--bg3);
+      color: white;
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
     .day-date {
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       color: #666;
-      margin-bottom: 12px;
+      margin: 0 0 20px 0;
     }
 
-    .meal-slot {
-      margin-bottom: 10px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      padding: 10px;
-      min-height: 60px;
-      background: #f9f9f9;
-    }
-
-    .meal-slot.breakfast {
-      border-color: var(--breakfast);
-      background: rgba(255, 195, 107, 0.05);
-    }
-
-    .meal-slot.lunch {
-      border-color: var(--lunch);
-      background: rgba(81, 255, 174, 0.05);
-    }
-
-    .meal-slot.dinner {
-      border-color: var(--dinner);
-      background: rgba(107, 175, 255, 0.05);
-    }
-
-    .meal-slot-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #666;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .assigned-meal {
-      background: white;
-      border: 2px solid var(--bg2);
-      border-radius: 6px;
-      padding: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #333;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .assigned-meal.favorite::before {
-      content: '⭐ ';
-    }
-
-    .week-btn {
-      background: white;
-      border: 2px solid #ddd;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: all 0.3s;
-      color: #333;
-    }
-
-    .week-btn:hover {
-      border-color: var(--bg2);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .info-message {
-      background: rgba(107, 175, 255, 0.1);
-      border: 2px solid var(--bg2);
-      border-radius: 8px;
-      padding: 15px;
+    .meal {
       margin-bottom: 20px;
-      text-align: center;
-      color: #333;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
     }
 
-    .info-message p {
-      margin: 5px 0;
+    .meal:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .meal-time {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #999;
+      margin: 0 0 8px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .meal-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #333;
+      margin: 0 0 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .favorite-star {
+      color: var(--bg4);
+      font-size: 1rem;
+    }
+
+    .meal-description {
+      font-size: 0.95rem;
+      color: #666;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .empty-state {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 60px 25px;
+      box-shadow: 0 8px 32px var(--card-shadow);
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    .empty-state h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin: 0 0 10px 0;
+    }
+
+    .empty-state p {
+      font-size: 1rem;
+      color: #666;
+      margin: 0;
+    }
+
+    .loading {
+      text-align: center;
+      color: white;
+      font-size: 1.1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .day-section {
+        padding: 20px;
+      }
+
+      .day-header {
+        font-size: 1.3rem;
+      }
+
+      .meal-name {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Weekly Meal Plan</h1>
-      <p>What's for dinner? Check this week's planned meals</p>
+      <h1>What's for Dinner?</h1>
+      <p>Upcoming planned meals</p>
     </header>
 
-    <div class="card" id="infoCard" class="hidden">
-      <div class="info-message">
-        <p><strong>Loading meal plan...</strong></p>
-        <p id="infoMessage">Please wait while we load this week's meals.</p>
-      </div>
-    </div>
+    <button class="refresh-btn" onclick="fetchMealPlanFromServer()">🔄 Refresh</button>
 
-    <div class="card">
-      <div class="week-navigation">
-        <div class="week-controls">
-          <button class="week-btn" onclick="previousWeek()">← Previous Week</button>
-          <button class="week-btn" onclick="currentWeek()">This Week</button>
-          <button class="week-btn" onclick="nextWeek()">Next Week →</button>
-          <button class="week-btn" onclick="fetchMealPlanFromServer()" style="border-color: var(--bg3); color: var(--bg3);">🔄 Refresh</button>
-        </div>
-        <h2 id="weekDisplay">Week of ...</h2>
-      </div>
-
-      <div id="weeklyCalendar" class="calendar-grid">
-        <!-- Days will be rendered here -->
-      </div>
+    <div id="mealList" class="meal-list">
+      <div class="loading">Loading meal plan...</div>
     </div>
   </div>
 
@@ -298,7 +236,6 @@
     // Global state
     let meals = [];
     let weeklyAssignments = [];
-    let currentWeekOffset = 0;
 
     // Initialize on page load
     window.addEventListener('DOMContentLoaded', () => {
@@ -308,7 +245,7 @@
     function init() {
       // Try to load from localStorage first (for offline viewing)
       loadFromLocalStorage();
-      calculateAndRenderWeek();
+      renderMealList();
 
       // Then fetch latest from server
       fetchMealPlanFromServer();
@@ -343,25 +280,7 @@
       localStorage.setItem('mealPlannerAssignments', JSON.stringify(weeklyAssignments));
     }
 
-    function showInfoMessage(message, isError = false) {
-      const infoCard = document.getElementById('infoCard');
-      const infoMessage = document.getElementById('infoMessage');
-
-      if (message) {
-        infoMessage.textContent = message;
-        infoCard.classList.remove('hidden');
-        if (isError) {
-          infoCard.querySelector('.info-message').style.borderColor = 'var(--bg1)';
-          infoCard.querySelector('.info-message').style.background = 'rgba(255, 107, 107, 0.1)';
-        }
-      } else {
-        infoCard.classList.add('hidden');
-      }
-    }
-
     function fetchMealPlanFromServer() {
-      showInfoMessage('Loading latest meal plan from server...');
-
       fetch('meals.xml')
         .then(response => {
           if (!response.ok) {
@@ -372,149 +291,15 @@
         .then(xmlText => {
           parseXMLData(xmlText);
           saveToLocalStorage();
-          calculateAndRenderWeek();
-          showInfoMessage(null); // Hide info message
+          renderMealList();
         })
         .catch(error => {
           console.error('Error loading meal plan:', error);
-          if (meals.length === 0) {
-            showInfoMessage('Could not load meal plan from server. Please check back later.', true);
-          } else {
-            // If we have cached data, just hide the message
-            showInfoMessage(null);
+          // If we have cached data, still render it
+          if (meals.length > 0) {
+            renderMealList();
           }
         });
-    }
-
-    // Week navigation functions
-    function calculateAndRenderWeek() {
-      const currentWeekDates = getCurrentWeekDates();
-      updateWeekDisplay(currentWeekDates);
-      renderCalendar(currentWeekDates);
-    }
-
-    function getCurrentWeekDates() {
-      const now = new Date();
-      const dayOfWeek = now.getDay(); // 0=Sunday, 1=Monday, etc.
-
-      // Calculate Sunday of current week
-      const sunday = new Date(now);
-      const diff = -dayOfWeek; // Days to subtract to get to Sunday
-      sunday.setDate(now.getDate() + diff);
-
-      // Apply week offset
-      sunday.setDate(sunday.getDate() + (currentWeekOffset * 7));
-
-      // Generate array of 7 dates (Sun-Sat)
-      const weekDates = [];
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(sunday);
-        date.setDate(sunday.getDate() + i);
-        weekDates.push({
-          dateObj: date,
-          dateString: formatDateISO(date),
-          dayName: getDayName(i),
-          displayDate: formatDateDisplay(date)
-        });
-      }
-
-      return weekDates;
-    }
-
-    function updateWeekDisplay(weekDates) {
-      const firstDay = weekDates[0];
-      const lastDay = weekDates[6];
-      document.getElementById('weekDisplay').textContent =
-        `Week of ${firstDay.displayDate} - ${lastDay.displayDate}`;
-    }
-
-    function previousWeek() {
-      currentWeekOffset--;
-      calculateAndRenderWeek();
-    }
-
-    function nextWeek() {
-      currentWeekOffset++;
-      calculateAndRenderWeek();
-    }
-
-    function currentWeek() {
-      currentWeekOffset = 0;
-      calculateAndRenderWeek();
-    }
-
-    // Date helper functions
-    function formatDateISO(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-
-    function getDayName(index) {
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      return days[index];
-    }
-
-    function formatDateDisplay(date) {
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      return `${months[date.getMonth()]} ${date.getDate()}`;
-    }
-
-    function isToday(dateString) {
-      const today = formatDateISO(new Date());
-      return dateString === today;
-    }
-
-    // Calendar rendering functions
-    function renderCalendar(weekDates) {
-      const container = document.getElementById('weeklyCalendar');
-
-      if (meals.length === 0) {
-        container.innerHTML = '<p class="empty-slot-text">No meal plan loaded. Click "Load Meal Plan" above to import.</p>';
-        return;
-      }
-
-      container.innerHTML = weekDates.map(day => {
-        const assignment = getAssignmentForDate(day.dateString);
-        const todayClass = isToday(day.dateString) ? 'today' : '';
-
-        return `
-          <div class="day-card ${todayClass}">
-            <div class="day-header">${day.dayName}</div>
-            <div class="day-date">${day.displayDate}</div>
-
-            ${renderMealSlot(day.dateString, 'breakfast', assignment?.breakfast)}
-            ${renderMealSlot(day.dateString, 'lunch', assignment?.lunch)}
-            ${renderMealSlot(day.dateString, 'dinner', assignment?.dinner)}
-          </div>
-        `;
-      }).join('');
-    }
-
-    function getAssignmentForDate(dateString) {
-      return weeklyAssignments.find(a => a.date === dateString);
-    }
-
-    function renderMealSlot(date, mealTime, assignedMealId) {
-      const meal = assignedMealId ? meals.find(m => m.id === assignedMealId) : null;
-
-      return `
-        <div class="meal-slot ${mealTime}">
-          <div class="meal-slot-label">${capitalizeFirstLetter(mealTime)}</div>
-          ${meal ? renderAssignedMeal(meal) :
-                  '<div class="empty-slot-text" style="padding: 10px;">No meal planned</div>'}
-        </div>
-      `;
-    }
-
-    function renderAssignedMeal(meal) {
-      const favoriteClass = meal.isFavorite ? 'favorite' : '';
-      return `
-        <div class="assigned-meal ${favoriteClass}">
-          <span>${meal.name}</span>
-        </div>
-      `;
     }
 
     // Parse XML data
@@ -552,6 +337,107 @@
     function getXMLValue(node, tagName) {
       const element = node.getElementsByTagName(tagName)[0];
       return element ? element.textContent : '';
+    }
+
+    // Render meal list
+    function renderMealList() {
+      const container = document.getElementById('mealList');
+
+      if (meals.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h2>No meal plan loaded</h2>
+            <p>Click refresh to load the latest meal plan</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Get today's date at midnight for comparison
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayString = formatDateISO(today);
+
+      // Filter assignments to only future/today and those with at least one meal
+      const upcomingAssignments = weeklyAssignments
+        .filter(assignment => {
+          // Only include today and future dates
+          if (assignment.date < todayString) return false;
+
+          // Only include if at least one meal is assigned
+          return assignment.breakfast || assignment.lunch || assignment.dinner;
+        })
+        .sort((a, b) => a.date.localeCompare(b.date)); // Sort by date ascending
+
+      if (upcomingAssignments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h2>No upcoming meals planned</h2>
+            <p>Check back later for the meal plan</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Render each day with meals
+      container.innerHTML = upcomingAssignments.map(assignment => {
+        const date = new Date(assignment.date + 'T00:00:00');
+        const isToday = assignment.date === todayString;
+
+        let mealsHTML = '';
+
+        // Render each meal type if it exists
+        ['breakfast', 'lunch', 'dinner'].forEach(mealTime => {
+          const mealId = assignment[mealTime];
+          if (mealId) {
+            const meal = meals.find(m => m.id === mealId);
+            if (meal) {
+              mealsHTML += renderMeal(mealTime, meal);
+            }
+          }
+        });
+
+        return `
+          <div class="day-section ${isToday ? 'today' : ''}">
+            <div class="day-header">
+              ${assignment.dayOfWeek}
+              ${isToday ? '<span class="today-badge">Today</span>' : ''}
+            </div>
+            <div class="day-date">${formatDateDisplay(date)}</div>
+            ${mealsHTML}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMeal(mealTime, meal) {
+      const favoriteIcon = meal.isFavorite ? '<span class="favorite-star">⭐</span>' : '';
+      const description = meal.description ? `<p class="meal-description">${meal.description}</p>` : '';
+
+      return `
+        <div class="meal">
+          <div class="meal-time">${capitalizeFirstLetter(mealTime)}</div>
+          <div class="meal-name">
+            ${meal.name}
+            ${favoriteIcon}
+          </div>
+          ${description}
+        </div>
+      `;
+    }
+
+    // Date helper functions
+    function formatDateISO(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatDateDisplay(date) {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
     }
 
     function capitalizeFirstLetter(string) {
