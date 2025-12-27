@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Meal Planner</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root {
+      --bg1: #ff6b6b;
+      --bg2: #6bafff;
+      --bg3: #51ffae;
+      --bg4: #ffc36b;
+      --breakfast: #ffc36b;
+      --lunch: #51ffae;
+      --dinner: #6bafff;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-shadow: rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(270deg, var(--bg1), var(--bg2), var(--bg3), var(--bg4));
+      background-size: 800% 800%;
+      animation: gradientShift 20s ease infinite;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0 0 10px 0;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 32px var(--card-shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .controls button, .controls label {
+      background: white;
+      border: 2px solid #ddd;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      color: #333;
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .controls button:hover, .controls label:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-color: var(--bg2);
+    }
+
+    .controls input[type="file"] {
+      display: none;
+    }
+
+    .week-navigation {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .week-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    #weekDisplay {
+      font-size: 1.3rem;
+      margin: 0;
+      color: #333;
+      flex: 1;
+      text-align: center;
+      min-width: 250px;
+    }
+
+    .mode-toggle {
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .mode-toggle button {
+      background: linear-gradient(135deg, var(--bg2), var(--bg3));
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 8px;
+    }
+
+    .mode-toggle button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    #modeDescription {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .planner-layout {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .planner-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .meal-library {
+        max-height: none !important;
+        position: relative !important;
+      }
+    }
+
+    .meal-library {
+      max-height: 85vh;
+      overflow-y: auto;
+      position: sticky;
+      top: 20px;
+    }
+
+    .meal-library h2, .meal-library h3 {
+      margin: 0 0 15px 0;
+      color: #333;
+    }
+
+    .meal-library h2 {
+      font-size: 1.5rem;
+    }
+
+    .meal-library h3 {
+      font-size: 1.1rem;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 8px;
+      margin-top: 25px;
+    }
+
+    .meal-section {
+      margin-bottom: 25px;
+    }
+
+    .add-meal-toggle {
+      background: linear-gradient(135deg, var(--bg2), var(--bg3));
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .add-meal-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .meal-form {
+      background: rgba(255, 255, 255, 0.5);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--bg2);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--bg2), var(--bg3));
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex: 1;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .search-filter {
+      margin-bottom: 15px;
+    }
+
+    .search-filter input {
+      margin-bottom: 10px;
+    }
+
+    .meal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .meal-item {
+      background: white;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: move;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .meal-item:hover {
+      border-color: var(--bg2);
+      transform: translateX(5px);
+    }
+
+    .meal-item.dragging {
+      opacity: 0.5;
+    }
+
+    .meal-item.favorite::before {
+      content: '⭐';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 1rem;
+    }
+
+    .meal-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .meal-type-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+
+    .meal-type-badge.breakfast { background: #fff3cd; color: #856404; }
+    .meal-type-badge.lunch { background: #d1ecf1; color: #0c5460; }
+    .meal-type-badge.dinner { background: #d4edda; color: #155724; }
+    .meal-type-badge.any { background: #e2e3e5; color: #383d41; }
+
+    .meal-description {
+      font-size: 0.8rem;
+      color: #666;
+      margin: 5px 0;
+    }
+
+    .meal-actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .btn-small {
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      font-weight: 600;
+    }
+
+    .btn-small:hover {
+      opacity: 0.8;
+    }
+
+    .btn-favorite {
+      background: #ffc36b;
+      color: white;
+    }
+
+    .btn-edit-meal {
+      background: var(--bg2);
+      color: white;
+    }
+
+    .btn-delete-meal {
+      background: var(--bg1);
+      color: white;
+    }
+
+    .empty-slot-text {
+      color: #999;
+      font-size: 0.85rem;
+      font-style: italic;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .calendar-grid {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    .day-card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .day-card.today {
+      border: 3px solid var(--bg3);
+      box-shadow: 0 4px 20px rgba(81, 255, 174, 0.3);
+    }
+
+    .day-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .day-date {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .meal-slot {
+      margin-bottom: 10px;
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 60px;
+      background: #f9f9f9;
+      transition: all 0.3s;
+    }
+
+    .meal-slot.breakfast {
+      border-color: var(--breakfast);
+    }
+
+    .meal-slot.lunch {
+      border-color: var(--lunch);
+    }
+
+    .meal-slot.dinner {
+      border-color: var(--dinner);
+    }
+
+    .meal-slot.drag-over {
+      background: rgba(107, 175, 255, 0.2);
+      border-color: var(--bg2);
+      border-style: solid;
+      transform: scale(1.02);
+    }
+
+    .meal-slot-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .assigned-meal {
+      background: white;
+      border: 2px solid var(--bg2);
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .assigned-meal.favorite {
+      border-color: #ffc36b;
+      background: #fff9f0;
+    }
+
+    .remove-meal-btn {
+      background: var(--bg1);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      font-weight: 700;
+    }
+
+    .remove-meal-btn:hover {
+      opacity: 0.8;
+    }
+
+    .add-meal-btn {
+      width: 100%;
+      background: var(--bg2);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.85rem;
+    }
+
+    .add-meal-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+
+    #modalSlotInfo {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .week-btn {
+      background: white;
+      border: 2px solid #ddd;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      color: #333;
+    }
+
+    .week-btn:hover {
+      border-color: var(--bg2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Weekly Meal Planner</h1>
+      <p>Plan your meals for the week with drag-and-drop or simple editing</p>
+    </header>
+
+    <div class="card">
+      <div class="controls">
+        <label for="importXML">
+          Import XML
+          <input type="file" id="importXML" accept=".xml">
+        </label>
+        <button onclick="downloadXML()">Download XML</button>
+        <button onclick="clearAll()">Clear All Data</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="week-navigation">
+        <div class="week-controls">
+          <button class="week-btn" onclick="previousWeek()">← Previous Week</button>
+          <button class="week-btn" onclick="currentWeek()">This Week</button>
+          <button class="week-btn" onclick="nextWeek()">Next Week →</button>
+        </div>
+        <h2 id="weekDisplay">Week of ...</h2>
+      </div>
+      <div class="mode-toggle">
+        <button id="toggleMode" onclick="toggleEditMode()">Switch to Form Mode</button>
+        <p id="modeDescription">Current: Drag & Drop Mode - Drag meals onto calendar</p>
+      </div>
+    </div>
+
+    <div class="planner-layout">
+      <div class="card meal-library">
+        <h2>Meal Library</h2>
+
+        <button class="add-meal-toggle" onclick="toggleAddMealForm()">+ Add New Meal</button>
+
+        <div id="addMealForm" class="meal-form hidden">
+          <form id="mealForm" onsubmit="return handleMealSubmit(event)">
+            <div class="form-group">
+              <label for="mealName">Name *</label>
+              <input type="text" id="mealName" required>
+            </div>
+            <div class="form-group">
+              <label for="mealType">Type *</label>
+              <select id="mealType" required>
+                <option value="">Select...</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="any">Any Time</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mealDescription">Description</label>
+              <textarea id="mealDescription"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="mealPrepTime">Prep Time (minutes)</label>
+              <input type="number" id="mealPrepTime" min="0">
+            </div>
+            <div class="form-group">
+              <label for="mealTags">Tags (comma-separated)</label>
+              <input type="text" id="mealTags" placeholder="e.g., quick, easy, healthy">
+            </div>
+            <div class="form-group">
+              <div class="checkbox-group">
+                <input type="checkbox" id="mealFavorite">
+                <label for="mealFavorite" style="margin: 0;">Mark as Favorite</label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" id="mealFormCancel" onclick="resetMealForm()" style="display: none;">Cancel</button>
+              <button type="submit" class="btn-primary" id="mealFormSubmit">Add Meal</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="meal-section">
+          <h3>⭐ Favorites</h3>
+          <div id="favoriteMeals" class="meal-list">
+            <p class="empty-slot-text">No favorites yet</p>
+          </div>
+        </div>
+
+        <div class="meal-section">
+          <h3>All Meals</h3>
+          <div class="search-filter">
+            <input type="text" id="mealSearch" placeholder="Search meals..." onkeyup="filterMeals()">
+            <select id="mealTypeFilter" onchange="filterMeals()">
+              <option value="">All Types</option>
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+              <option value="any">Any Time</option>
+            </select>
+          </div>
+          <div id="allMeals" class="meal-list">
+            <p class="empty-slot-text">No meals yet. Add your first meal above!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Weekly Calendar</h2>
+        <div id="weeklyCalendar" class="calendar-grid">
+          <!-- Days will be rendered here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="assignmentModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Assign Meal</h3>
+      <p id="modalSlotInfo">Monday - Breakfast</p>
+      <select id="modalMealSelect">
+        <option value="">-- Select a meal --</option>
+      </select>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="confirmAssignment()">Assign</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global state
+    let meals = [];
+    let weeklyAssignments = [];
+    let currentWeekOffset = 0;
+    let isDragDropMode = true;
+    let editingMealId = null;
+    let modalSlotDate = null;
+    let modalSlotTime = null;
+    let draggedMealId = null;
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      init();
+    });
+
+    function init() {
+      loadFromLocalStorage();
+      renderMealLibrary();
+      calculateAndRenderWeek();
+      updateModeUI();
+    }
+
+    // LocalStorage functions
+    function loadFromLocalStorage() {
+      const savedMeals = localStorage.getItem('mealPlannerMeals');
+      const savedAssignments = localStorage.getItem('mealPlannerAssignments');
+
+      if (savedMeals) {
+        try {
+          meals = JSON.parse(savedMeals);
+        } catch (e) {
+          console.error('Error loading meals:', e);
+          meals = [];
+        }
+      }
+
+      if (savedAssignments) {
+        try {
+          weeklyAssignments = JSON.parse(savedAssignments);
+        } catch (e) {
+          console.error('Error loading assignments:', e);
+          weeklyAssignments = [];
+        }
+      }
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem('mealPlannerMeals', JSON.stringify(meals));
+      localStorage.setItem('mealPlannerAssignments', JSON.stringify(weeklyAssignments));
+    }
+
+    // Week navigation functions
+    function calculateAndRenderWeek() {
+      const currentWeekDates = getCurrentWeekDates();
+      updateWeekDisplay(currentWeekDates);
+      renderCalendar(currentWeekDates);
+    }
+
+    function getCurrentWeekDates() {
+      const now = new Date();
+      const dayOfWeek = now.getDay(); // 0=Sunday, 1=Monday, etc.
+
+      // Calculate Sunday of current week
+      const sunday = new Date(now);
+      const diff = -dayOfWeek; // Days to subtract to get to Sunday
+      sunday.setDate(now.getDate() + diff);
+
+      // Apply week offset
+      sunday.setDate(sunday.getDate() + (currentWeekOffset * 7));
+
+      // Generate array of 7 dates (Sun-Sat)
+      const weekDates = [];
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(sunday);
+        date.setDate(sunday.getDate() + i);
+        weekDates.push({
+          dateObj: date,
+          dateString: formatDateISO(date),
+          dayName: getDayName(i),
+          displayDate: formatDateDisplay(date)
+        });
+      }
+
+      return weekDates;
+    }
+
+    function updateWeekDisplay(weekDates) {
+      const firstDay = weekDates[0];
+      const lastDay = weekDates[6];
+      document.getElementById('weekDisplay').textContent =
+        `Week of ${firstDay.displayDate} - ${lastDay.displayDate}`;
+    }
+
+    function previousWeek() {
+      currentWeekOffset--;
+      calculateAndRenderWeek();
+    }
+
+    function nextWeek() {
+      currentWeekOffset++;
+      calculateAndRenderWeek();
+    }
+
+    function currentWeek() {
+      currentWeekOffset = 0;
+      calculateAndRenderWeek();
+    }
+
+    // Date helper functions
+    function formatDateISO(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function getDayName(index) {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[index];
+    }
+
+    function formatDateDisplay(date) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return `${months[date.getMonth()]} ${date.getDate()}`;
+    }
+
+    function isToday(dateString) {
+      const today = formatDateISO(new Date());
+      return dateString === today;
+    }
+
+    function getDayNameFromDate(dateString) {
+      const date = new Date(dateString + 'T00:00:00');
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[date.getDay()];
+    }
+
+    // Calendar rendering functions
+    function renderCalendar(weekDates) {
+      const container = document.getElementById('weeklyCalendar');
+
+      container.innerHTML = weekDates.map(day => {
+        const assignment = getAssignmentForDate(day.dateString);
+        const todayClass = isToday(day.dateString) ? 'today' : '';
+
+        return `
+          <div class="day-card ${todayClass}">
+            <div class="day-header">${day.dayName}</div>
+            <div class="day-date">${day.displayDate}</div>
+
+            ${renderMealSlot(day.dateString, 'breakfast', assignment?.breakfast)}
+            ${renderMealSlot(day.dateString, 'lunch', assignment?.lunch)}
+            ${renderMealSlot(day.dateString, 'dinner', assignment?.dinner)}
+          </div>
+        `;
+      }).join('');
+
+      // Attach event listeners after rendering
+      if (isDragDropMode) {
+        attachDragDropListeners();
+      }
+    }
+
+    function getAssignmentForDate(dateString) {
+      return weeklyAssignments.find(a => a.date === dateString);
+    }
+
+    function renderMealSlot(date, mealTime, assignedMealId) {
+      const meal = assignedMealId ? meals.find(m => m.id === assignedMealId) : null;
+      const slotId = `slot-${date}-${mealTime}`;
+
+      if (isDragDropMode) {
+        return `
+          <div class="meal-slot ${mealTime}"
+               id="${slotId}"
+               data-date="${date}"
+               data-mealtime="${mealTime}">
+            <div class="meal-slot-label">${capitalizeFirstLetter(mealTime)}</div>
+            ${meal ? renderAssignedMeal(meal, date, mealTime) :
+                    '<div class="empty-slot-text" style="padding: 10px;">Drop meal here</div>'}
+          </div>
+        `;
+      } else {
+        return `
+          <div class="meal-slot ${mealTime}" id="${slotId}">
+            <div class="meal-slot-label">${capitalizeFirstLetter(mealTime)}</div>
+            ${meal ? renderAssignedMeal(meal, date, mealTime) :
+                    `<button class="add-meal-btn"
+                             onclick="openAssignmentModal('${date}', '${mealTime}')">
+                       + Add
+                     </button>`}
+          </div>
+        `;
+      }
+    }
+
+    function renderAssignedMeal(meal, date, mealTime) {
+      const favoriteClass = meal.isFavorite ? 'favorite' : '';
+      return `
+        <div class="assigned-meal ${favoriteClass}">
+          <span>${meal.name}</span>
+          <button class="remove-meal-btn"
+                  onclick="removeMealAssignment('${date}', '${mealTime}')">
+            ✕
+          </button>
+        </div>
+      `;
+    }
+
+    function removeMealAssignment(date, mealTime) {
+      const assignment = weeklyAssignments.find(a => a.date === date);
+      if (assignment) {
+        assignment[mealTime] = '';
+        saveToLocalStorage();
+        calculateAndRenderWeek();
+      }
+    }
+
+    // Drag and drop functions
+    function attachDragDropListeners() {
+      document.querySelectorAll('.meal-item').forEach(item => {
+        item.setAttribute('draggable', 'true');
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragend', handleDragEnd);
+      });
+
+      document.querySelectorAll('.meal-slot').forEach(slot => {
+        slot.addEventListener('dragover', handleDragOver);
+        slot.addEventListener('dragleave', handleDragLeave);
+        slot.addEventListener('drop', handleDrop);
+      });
+    }
+
+    function handleDragStart(e) {
+      draggedMealId = e.target.dataset.mealId;
+      e.target.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', e.target.innerHTML);
+    }
+
+    function handleDragEnd(e) {
+      e.target.classList.remove('dragging');
+    }
+
+    function handleDragOver(e) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('drag-over');
+      return false;
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+
+      e.currentTarget.classList.remove('drag-over');
+
+      const slot = e.currentTarget;
+      const date = slot.dataset.date;
+      const mealTime = slot.dataset.mealtime;
+
+      if (draggedMealId) {
+        assignMealToSlot(date, mealTime, draggedMealId);
+        draggedMealId = null;
+      }
+
+      return false;
+    }
+
+    function assignMealToSlot(date, mealTime, mealId) {
+      let assignment = weeklyAssignments.find(a => a.date === date);
+
+      if (!assignment) {
+        assignment = {
+          date: date,
+          dayOfWeek: getDayNameFromDate(date),
+          breakfast: '',
+          lunch: '',
+          dinner: ''
+        };
+        weeklyAssignments.push(assignment);
+      }
+
+      assignment[mealTime] = mealId;
+
+      saveToLocalStorage();
+      calculateAndRenderWeek();
+    }
+
+    // Form mode functions
+    function openAssignmentModal(date, mealTime) {
+      modalSlotDate = date;
+      modalSlotTime = mealTime;
+
+      const dayName = getDayNameFromDate(date);
+      document.getElementById('modalSlotInfo').textContent =
+        `${dayName} - ${capitalizeFirstLetter(mealTime)}`;
+
+      populateModalMealSelect(mealTime);
+
+      document.getElementById('assignmentModal').classList.remove('hidden');
+    }
+
+    function populateModalMealSelect(mealTime) {
+      const select = document.getElementById('modalMealSelect');
+
+      const filteredMeals = meals.filter(meal =>
+        meal.type === mealTime || meal.type === 'any'
+      );
+
+      filteredMeals.sort((a, b) => {
+        if (a.isFavorite && !b.isFavorite) return -1;
+        if (!a.isFavorite && b.isFavorite) return 1;
+        return a.name.localeCompare(b.name);
+      });
+
+      select.innerHTML = '<option value="">-- Select a meal --</option>' +
+        filteredMeals.map(meal => `
+          <option value="${meal.id}">
+            ${meal.isFavorite ? '⭐ ' : ''}${meal.name}
+          </option>
+        `).join('');
+    }
+
+    function confirmAssignment() {
+      const mealId = document.getElementById('modalMealSelect').value;
+
+      if (!mealId) {
+        alert('Please select a meal');
+        return;
+      }
+
+      assignMealToSlot(modalSlotDate, modalSlotTime, mealId);
+      closeModal();
+    }
+
+    function closeModal() {
+      document.getElementById('assignmentModal').classList.add('hidden');
+      modalSlotDate = null;
+      modalSlotTime = null;
+    }
+
+    // Mode toggle functions
+    function toggleEditMode() {
+      isDragDropMode = !isDragDropMode;
+      updateModeUI();
+      calculateAndRenderWeek();
+      renderMealLibrary();
+    }
+
+    function updateModeUI() {
+      const toggleBtn = document.getElementById('toggleMode');
+      const modeDesc = document.getElementById('modeDescription');
+
+      if (isDragDropMode) {
+        toggleBtn.textContent = 'Switch to Form Mode';
+        modeDesc.textContent = 'Current: Drag & Drop Mode - Drag meals onto calendar';
+      } else {
+        toggleBtn.textContent = 'Switch to Drag & Drop Mode';
+        modeDesc.textContent = 'Current: Form Mode - Click + to assign meals';
+      }
+    }
+
+    // Meal library functions
+    function renderMealLibrary() {
+      renderFavoriteMeals();
+      renderAllMeals();
+    }
+
+    function renderFavoriteMeals() {
+      const container = document.getElementById('favoriteMeals');
+      const favorites = meals.filter(m => m.isFavorite);
+
+      if (favorites.length === 0) {
+        container.innerHTML = '<p class="empty-slot-text">No favorites yet</p>';
+        return;
+      }
+
+      container.innerHTML = favorites.map(meal => renderMealItem(meal)).join('');
+
+      if (isDragDropMode) {
+        attachMealItemListeners();
+      }
+    }
+
+    function renderAllMeals() {
+      const container = document.getElementById('allMeals');
+      const searchTerm = document.getElementById('mealSearch')?.value.toLowerCase() || '';
+      const typeFilter = document.getElementById('mealTypeFilter')?.value || '';
+
+      let filteredMeals = meals.filter(meal => {
+        const matchesSearch = meal.name.toLowerCase().includes(searchTerm) ||
+                             (meal.description && meal.description.toLowerCase().includes(searchTerm));
+        const matchesType = !typeFilter || meal.type === typeFilter;
+        return matchesSearch && matchesType;
+      });
+
+      if (filteredMeals.length === 0) {
+        container.innerHTML = '<p class="empty-slot-text">No meals found</p>';
+        return;
+      }
+
+      container.innerHTML = filteredMeals.map(meal => renderMealItem(meal)).join('');
+
+      if (isDragDropMode) {
+        attachMealItemListeners();
+      }
+    }
+
+    function renderMealItem(meal) {
+      const prepTimeText = meal.prepTime ? `<div class="meal-description">⏱️ ${meal.prepTime} min</div>` : '';
+
+      return `
+        <div class="meal-item ${meal.isFavorite ? 'favorite' : ''}"
+             data-meal-id="${meal.id}">
+          <div class="meal-name">${meal.name}</div>
+          <span class="meal-type-badge ${meal.type}">${meal.type}</span>
+          ${meal.description ? `<div class="meal-description">${meal.description}</div>` : ''}
+          ${prepTimeText}
+          <div class="meal-actions">
+            <button class="btn-small btn-favorite"
+                    onclick="toggleFavorite('${meal.id}')">
+              ${meal.isFavorite ? 'Unfavorite' : 'Favorite'}
+            </button>
+            <button class="btn-small btn-edit-meal"
+                    onclick="editMeal('${meal.id}')">
+              Edit
+            </button>
+            <button class="btn-small btn-delete-meal"
+                    onclick="deleteMeal('${meal.id}')">
+              Delete
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function attachMealItemListeners() {
+      document.querySelectorAll('.meal-item').forEach(item => {
+        item.setAttribute('draggable', 'true');
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragend', handleDragEnd);
+      });
+    }
+
+    function toggleFavorite(mealId) {
+      const meal = meals.find(m => m.id === mealId);
+      if (meal) {
+        meal.isFavorite = !meal.isFavorite;
+        saveToLocalStorage();
+        renderMealLibrary();
+        calculateAndRenderWeek();
+      }
+    }
+
+    function editMeal(mealId) {
+      editingMealId = mealId;
+      const meal = meals.find(m => m.id === mealId);
+
+      document.getElementById('mealName').value = meal.name;
+      document.getElementById('mealType').value = meal.type;
+      document.getElementById('mealDescription').value = meal.description || '';
+      document.getElementById('mealPrepTime').value = meal.prepTime || '';
+      document.getElementById('mealTags').value = meal.tags || '';
+      document.getElementById('mealFavorite').checked = meal.isFavorite;
+
+      document.getElementById('addMealForm').classList.remove('hidden');
+      document.getElementById('mealFormSubmit').textContent = 'Update Meal';
+      document.getElementById('mealFormCancel').style.display = 'inline-block';
+
+      document.getElementById('addMealForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteMeal(mealId) {
+      const meal = meals.find(m => m.id === mealId);
+      if (!confirm(`Delete "${meal.name}"? This will remove it from all assigned days.`)) {
+        return;
+      }
+
+      meals = meals.filter(m => m.id !== mealId);
+
+      weeklyAssignments.forEach(assignment => {
+        if (assignment.breakfast === mealId) assignment.breakfast = '';
+        if (assignment.lunch === mealId) assignment.lunch = '';
+        if (assignment.dinner === mealId) assignment.dinner = '';
+      });
+
+      saveToLocalStorage();
+      renderMealLibrary();
+      calculateAndRenderWeek();
+    }
+
+    function handleMealSubmit(event) {
+      event.preventDefault();
+
+      const mealData = {
+        id: editingMealId || 'meal_' + Date.now(),
+        name: document.getElementById('mealName').value,
+        type: document.getElementById('mealType').value,
+        description: document.getElementById('mealDescription').value,
+        prepTime: parseInt(document.getElementById('mealPrepTime').value) || 0,
+        tags: document.getElementById('mealTags').value,
+        isFavorite: document.getElementById('mealFavorite').checked
+      };
+
+      if (editingMealId) {
+        const index = meals.findIndex(m => m.id === editingMealId);
+        meals[index] = mealData;
+        editingMealId = null;
+      } else {
+        meals.push(mealData);
+      }
+
+      saveToLocalStorage();
+      renderMealLibrary();
+      calculateAndRenderWeek();
+      resetMealForm();
+
+      return false;
+    }
+
+    function resetMealForm() {
+      document.getElementById('mealForm').reset();
+      document.getElementById('mealFormSubmit').textContent = 'Add Meal';
+      document.getElementById('mealFormCancel').style.display = 'none';
+      document.getElementById('addMealForm').classList.add('hidden');
+      editingMealId = null;
+    }
+
+    function toggleAddMealForm() {
+      const form = document.getElementById('addMealForm');
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) {
+        document.getElementById('mealName').focus();
+      }
+    }
+
+    function filterMeals() {
+      renderAllMeals();
+    }
+
+    // XML functions
+    function downloadXML() {
+      if (meals.length === 0) {
+        alert('No meals to export!');
+        return;
+      }
+
+      let xml = '<?xml version=\'1.0\' encoding=\'utf-8\'?>\n';
+      xml += '<MealPlanner>\n';
+
+      xml += '  <MealLibrary>\n';
+      meals.forEach(meal => {
+        xml += '    <Meal>\n';
+        xml += `      <ID>${escapeXML(meal.id)}</ID>\n`;
+        xml += `      <Name>${escapeXML(meal.name)}</Name>\n`;
+        xml += `      <Type>${escapeXML(meal.type)}</Type>\n`;
+        xml += `      <IsFavorite>${meal.isFavorite}</IsFavorite>\n`;
+        xml += `      <Description>${escapeXML(meal.description)}</Description>\n`;
+        xml += `      <PrepTime>${meal.prepTime}</PrepTime>\n`;
+        xml += `      <Tags>${escapeXML(meal.tags)}</Tags>\n`;
+        xml += '    </Meal>\n';
+      });
+      xml += '  </MealLibrary>\n';
+
+      xml += '  <WeeklyAssignments>\n';
+      weeklyAssignments.forEach(assignment => {
+        xml += '    <Assignment>\n';
+        xml += `      <Date>${assignment.date}</Date>\n`;
+        xml += `      <DayOfWeek>${assignment.dayOfWeek}</DayOfWeek>\n`;
+        xml += `      <Breakfast>${escapeXML(assignment.breakfast)}</Breakfast>\n`;
+        xml += `      <Lunch>${escapeXML(assignment.lunch)}</Lunch>\n`;
+        xml += `      <Dinner>${escapeXML(assignment.dinner)}</Dinner>\n`;
+        xml += '    </Assignment>\n';
+      });
+      xml += '  </WeeklyAssignments>\n';
+
+      xml += '</MealPlanner>\n';
+
+      const blob = new Blob([xml], { type: 'application/xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'meal-plan.xml';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('importXML').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(e.target.result, 'text/xml');
+
+          const mealNodes = xmlDoc.getElementsByTagName('Meal');
+          meals = [];
+          for (let node of mealNodes) {
+            meals.push({
+              id: getXMLValue(node, 'ID'),
+              name: getXMLValue(node, 'Name'),
+              type: getXMLValue(node, 'Type'),
+              isFavorite: getXMLValue(node, 'IsFavorite') === 'true',
+              description: getXMLValue(node, 'Description'),
+              prepTime: parseInt(getXMLValue(node, 'PrepTime')) || 0,
+              tags: getXMLValue(node, 'Tags')
+            });
+          }
+
+          const assignmentNodes = xmlDoc.getElementsByTagName('Assignment');
+          weeklyAssignments = [];
+          for (let node of assignmentNodes) {
+            weeklyAssignments.push({
+              date: getXMLValue(node, 'Date'),
+              dayOfWeek: getXMLValue(node, 'DayOfWeek'),
+              breakfast: getXMLValue(node, 'Breakfast'),
+              lunch: getXMLValue(node, 'Lunch'),
+              dinner: getXMLValue(node, 'Dinner')
+            });
+          }
+
+          saveToLocalStorage();
+          renderMealLibrary();
+          calculateAndRenderWeek();
+          alert(`Successfully imported ${meals.length} meals!`);
+        } catch (error) {
+          alert('Error parsing XML file: ' + error.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    function getXMLValue(node, tagName) {
+      const element = node.getElementsByTagName(tagName)[0];
+      return element ? element.textContent : '';
+    }
+
+    function escapeXML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    }
+
+    function clearAll() {
+      if (!confirm('Clear all meals and assignments? This cannot be undone!')) {
+        return;
+      }
+
+      meals = [];
+      weeklyAssignments = [];
+      saveToLocalStorage();
+      renderMealLibrary();
+      calculateAndRenderWeek();
+    }
+
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MealPlanner>
+  <MealLibrary>
+    <Meal>
+      <ID>meal_1</ID>
+      <Name>Scrambled Eggs and Toast</Name>
+      <Type>breakfast</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Quick and easy scrambled eggs with buttered toast</Description>
+      <PrepTime>15</PrepTime>
+      <Tags>quick,easy,protein</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_2</ID>
+      <Name>Pancakes</Name>
+      <Type>breakfast</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Fluffy pancakes with syrup and butter</Description>
+      <PrepTime>20</PrepTime>
+      <Tags>weekend,sweet</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_3</ID>
+      <Name>Oatmeal with Fruit</Name>
+      <Type>breakfast</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Warm oatmeal topped with fresh berries and honey</Description>
+      <PrepTime>10</PrepTime>
+      <Tags>healthy,quick</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_4</ID>
+      <Name>Cereal</Name>
+      <Type>breakfast</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Quick cereal with milk</Description>
+      <PrepTime>5</PrepTime>
+      <Tags>quick,easy</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_5</ID>
+      <Name>Sandwiches</Name>
+      <Type>lunch</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Classic deli sandwiches with chips</Description>
+      <PrepTime>10</PrepTime>
+      <Tags>quick,easy</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_6</ID>
+      <Name>Chicken Caesar Salad</Name>
+      <Type>lunch</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Fresh romaine with grilled chicken and Caesar dressing</Description>
+      <PrepTime>20</PrepTime>
+      <Tags>healthy,salad</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_7</ID>
+      <Name>Leftover Night</Name>
+      <Type>lunch</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Enjoy last night&apos;s dinner as lunch</Description>
+      <PrepTime>5</PrepTime>
+      <Tags>easy,zero-waste</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_8</ID>
+      <Name>Grilled Cheese</Name>
+      <Type>lunch</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Classic grilled cheese sandwich with tomato soup</Description>
+      <PrepTime>15</PrepTime>
+      <Tags>comfort,easy</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_9</ID>
+      <Name>Pizza</Name>
+      <Type>dinner</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Saturday night favorite - homemade or delivery</Description>
+      <PrepTime>30</PrepTime>
+      <Tags>weekend,favorite,easy</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_10</ID>
+      <Name>Spaghetti and Meatballs</Name>
+      <Type>dinner</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Classic Italian pasta with homemade meatballs</Description>
+      <PrepTime>45</PrepTime>
+      <Tags>pasta,italian,comfort</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_11</ID>
+      <Name>Tacos</Name>
+      <Type>dinner</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Taco Tuesday! Ground beef or chicken tacos with all the fixings</Description>
+      <PrepTime>30</PrepTime>
+      <Tags>mexican,fun,family</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_12</ID>
+      <Name>Grilled Chicken and Vegetables</Name>
+      <Type>dinner</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Healthy grilled chicken breast with roasted vegetables</Description>
+      <PrepTime>35</PrepTime>
+      <Tags>healthy,grilled</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_13</ID>
+      <Name>Burgers and Fries</Name>
+      <Type>dinner</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Juicy hamburgers with crispy french fries</Description>
+      <PrepTime>30</PrepTime>
+      <Tags>grilled,comfort</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_14</ID>
+      <Name>Stir Fry</Name>
+      <Type>dinner</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Quick vegetable and chicken stir fry over rice</Description>
+      <PrepTime>25</PrepTime>
+      <Tags>quick,healthy,asian</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_15</ID>
+      <Name>Mac and Cheese</Name>
+      <Type>dinner</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>Creamy homemade mac and cheese - kid favorite!</Description>
+      <PrepTime>25</PrepTime>
+      <Tags>comfort,pasta,kid-friendly</Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_16</ID>
+      <Name>Soup and Salad</Name>
+      <Type>any</Type>
+      <IsFavorite>false</IsFavorite>
+      <Description>Light meal with homemade soup and fresh salad</Description>
+      <PrepTime>30</PrepTime>
+      <Tags>healthy,light</Tags>
+    </Meal>
+  </MealLibrary>
+  <WeeklyAssignments>
+    <Assignment>
+      <Date>2025-12-21</Date>
+      <DayOfWeek>Sunday</DayOfWeek>
+      <Breakfast>meal_3</Breakfast>
+      <Lunch>meal_7</Lunch>
+      <Dinner>meal_15</Dinner>
+    </Assignment>
+    <Assignment>
+      <Date>2025-12-22</Date>
+      <DayOfWeek>Monday</DayOfWeek>
+      <Breakfast>meal_4</Breakfast>
+      <Lunch>meal_5</Lunch>
+      <Dinner>meal_10</Dinner>
+    </Assignment>
+    <Assignment>
+      <Date>2025-12-23</Date>
+      <DayOfWeek>Tuesday</DayOfWeek>
+      <Breakfast>meal_1</Breakfast>
+      <Lunch>meal_7</Lunch>
+      <Dinner>meal_11</Dinner>
+    </Assignment>
+    <Assignment>
+      <Date>2025-12-24</Date>
+      <DayOfWeek>Wednesday</DayOfWeek>
+      <Breakfast>meal_4</Breakfast>
+      <Lunch>meal_5</Lunch>
+      <Dinner>meal_12</Dinner>
+    </Assignment>
+    <Assignment>
+      <Date>2025-12-25</Date>
+      <DayOfWeek>Thursday</DayOfWeek>
+      <Breakfast>meal_2</Breakfast>
+      <Lunch>meal_8</Lunch>
+      <Dinner></Dinner>
+    </Assignment>
+    <Assignment>
+      <Date>2025-12-26</Date>
+      <DayOfWeek>Friday</DayOfWeek>
+      <Breakfast>meal_4</Breakfast>
+      <Lunch>meal_5</Lunch>
+      <Dinner>meal_14</Dinner>
+    </Assignment>
+    <Assignment>
+      <Date>2025-12-27</Date>
+      <DayOfWeek>Saturday</DayOfWeek>
+      <Breakfast>meal_2</Breakfast>
+      <Lunch>meal_16</Lunch>
+      <Dinner>meal_9</Dinner>
+    </Assignment>
+  </WeeklyAssignments>
+</MealPlanner>
