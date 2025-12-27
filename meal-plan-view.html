@@ -101,6 +101,41 @@
       box-shadow: 0 8px 32px rgba(81, 255, 174, 0.3);
     }
 
+    .day-section.suggestion {
+      background: linear-gradient(135deg, rgba(255, 195, 107, 0.15), rgba(255, 107, 107, 0.15));
+      border: 3px dashed var(--bg4);
+    }
+
+    .suggestion-message {
+      background: rgba(255, 195, 107, 0.2);
+      border-left: 4px solid var(--bg4);
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .suggestion-message p {
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .suggestion-message p:last-child {
+      margin: 0;
+    }
+
+    .suggestion-message .names {
+      font-weight: 700;
+      color: var(--bg1);
+    }
+
+    .suggestion-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
     .day-header {
       font-size: 1.5rem;
       font-weight: 700;
@@ -358,35 +393,52 @@
       today.setHours(0, 0, 0, 0);
       const todayString = formatDateISO(today);
 
-      // Filter assignments to only future/today and those with at least one meal
-      const upcomingAssignments = weeklyAssignments
-        .filter(assignment => {
-          // Only include today and future dates
-          if (assignment.date < todayString) return false;
+      // Generate next 14 days
+      const upcomingDays = [];
+      for (let i = 0; i < 14; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        const dateString = formatDateISO(date);
 
-          // Only include if at least one meal is assigned
-          return assignment.breakfast || assignment.lunch || assignment.dinner;
-        })
-        .sort((a, b) => a.date.localeCompare(b.date)); // Sort by date ascending
+        // Find assignment for this date
+        const assignment = weeklyAssignments.find(a => a.date === dateString);
 
-      if (upcomingAssignments.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <h2>No upcoming meals planned</h2>
-            <p>Check back later for the meal plan</p>
-          </div>
-        `;
-        return;
+        upcomingDays.push({
+          date: dateString,
+          dateObj: date,
+          dayOfWeek: getDayOfWeek(date),
+          assignment: assignment
+        });
       }
 
-      // Render each day with meals
-      container.innerHTML = upcomingAssignments.map(assignment => {
-        const date = new Date(assignment.date + 'T00:00:00');
-        const isToday = assignment.date === todayString;
+      // Render each day
+      container.innerHTML = upcomingDays.map(day => {
+        const isToday = day.date === todayString;
+        const assignment = day.assignment;
 
+        // Check if this day has any meals
+        const hasMeals = assignment && (assignment.breakfast || assignment.lunch || assignment.dinner);
+
+        if (!hasMeals) {
+          // Render suggestion card
+          return `
+            <div class="day-section suggestion ${isToday ? 'today' : ''}">
+              <div class="day-header">
+                ${day.dayOfWeek}
+                ${isToday ? '<span class="today-badge">Today</span>' : ''}
+              </div>
+              <div class="day-date">${formatDateDisplay(day.dateObj)}</div>
+              <div class="suggestion-message">
+                <span class="suggestion-icon">💭</span>
+                <p><span class="names">Ashlee & Mary</span> - No meal planned yet!</p>
+                <p>Got any ideas? Message Dad with your suggestions! 😊</p>
+              </div>
+            </div>
+          `;
+        }
+
+        // Render normal meal day
         let mealsHTML = '';
-
-        // Render each meal type if it exists
         ['breakfast', 'lunch', 'dinner'].forEach(mealTime => {
           const mealId = assignment[mealTime];
           if (mealId) {
@@ -400,14 +452,19 @@
         return `
           <div class="day-section ${isToday ? 'today' : ''}">
             <div class="day-header">
-              ${assignment.dayOfWeek}
+              ${day.dayOfWeek}
               ${isToday ? '<span class="today-badge">Today</span>' : ''}
             </div>
-            <div class="day-date">${formatDateDisplay(date)}</div>
+            <div class="day-date">${formatDateDisplay(day.dateObj)}</div>
             ${mealsHTML}
           </div>
         `;
       }).join('');
+    }
+
+    function getDayOfWeek(date) {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[date.getDay()];
     }
 
     function renderMeal(mealTime, meal) {
