@@ -66,10 +66,19 @@
     </Meal>
     <Meal>
       <ID>meal_1766878101479</ID>
-      <Name>Rotisserie Chicken </Name>
+      <Name>Rotisserie Chicken</Name>
       <Type>dinner</Type>
       <IsFavorite>true</IsFavorite>
       <Description>Potato chips</Description>
+      <PrepTime>0</PrepTime>
+      <Tags></Tags>
+    </Meal>
+    <Meal>
+      <ID>meal_chickennuggs</ID>
+      <Name>Chicken Nuggets</Name>
+      <Type>dinner</Type>
+      <IsFavorite>true</IsFavorite>
+      <Description>French fries</Description>
       <PrepTime>0</PrepTime>
       <Tags></Tags>
     </Meal>
@@ -81,6 +90,13 @@
       <Breakfast></Breakfast>
       <Lunch></Lunch>
       <Dinner>meal_1766877740713</Dinner>
+    </Assignment>
+    <Assignment>
+      <Date>2025-12-29</Date>
+      <DayOfWeek>Monday</DayOfWeek>
+      <Breakfast></Breakfast>
+      <Lunch></Lunch>
+      <Dinner>meal_chickennuggs</Dinner>
     </Assignment>
     <Assignment>
       <Date>2025-12-31</Date>
