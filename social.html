@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#173b3f" />
+  <meta name="description" content="Mobile pet grooming brought to your door. Follow us online and stay connected." />
+  <meta property="og:title" content="Parker Mobile Pet Grooming" />
+  <meta property="og:description" content="Professional, stress-free pet grooming brought right to your door." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.parker1978.com/social.html" />
+  <meta property="og:image" content="https://www.parker1978.com/og-social.png" />
+  <meta property="og:image:alt" content="Parker Mobile Pet Grooming — professional grooming, right at your door." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Parker Mobile Pet Grooming" />
+  <meta name="twitter:description" content="Professional grooming, right at your door." />
+  <meta name="twitter:image" content="https://www.parker1978.com/og-social.png" />
+  <title>Parker Mobile Pet Grooming | Connect With Us</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    :root {
+      --ink: #173b3f;
+      --ink-soft: #50666a;
+      --paper: #fffdf8;
+      --cream: #f5eee1;
+      --sage: #b8d7cf;
+      --sage-dark: #33766f;
+      --line: rgba(23, 59, 63, 0.13);
+      --shadow: 0 22px 70px rgba(23, 59, 63, 0.13);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--cream);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(184, 215, 207, 0.75), transparent 30rem),
+        radial-gradient(circle at 92% 88%, rgba(225, 196, 151, 0.38), transparent 26rem),
+        var(--cream);
+    }
+
+    body::before,
+    body::after {
+      position: fixed;
+      z-index: 0;
+      width: 12rem;
+      height: 12rem;
+      border: 1px solid rgba(23, 59, 63, 0.08);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    body::before {
+      top: -5rem;
+      right: -4rem;
+    }
+
+    body::after {
+      bottom: -6rem;
+      left: -4rem;
+      width: 16rem;
+      height: 16rem;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      padding: 28px 18px;
+    }
+
+    .card {
+      width: min(100%, 480px);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 30px;
+      background: rgba(255, 253, 248, 0.92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      padding: 34px 30px 27px;
+      text-align: center;
+    }
+
+    .logo-placeholder {
+      display: grid;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 22px;
+      place-items: center;
+      border: 1px dashed rgba(23, 59, 63, 0.32);
+      border-radius: 50%;
+      background: linear-gradient(145deg, #ffffff, #e4f0ec);
+      box-shadow: 0 12px 30px rgba(23, 59, 63, 0.11);
+    }
+
+    .logo-mark {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.08em;
+      line-height: 1;
+    }
+
+    .logo-label {
+      display: block;
+      margin-top: 6px;
+      color: var(--ink-soft);
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--sage-dark);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 360px;
+      margin: 0 auto;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 8vw, 2.7rem);
+      font-weight: 500;
+      letter-spacing: -0.045em;
+      line-height: 0.98;
+    }
+
+    .intro {
+      max-width: 365px;
+      margin: 17px auto 0;
+      color: var(--ink-soft);
+      font-size: 0.98rem;
+      line-height: 1.65;
+    }
+
+    .service-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(184, 215, 207, 0.25);
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .service-note::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4a978e;
+      box-shadow: 0 0 0 4px rgba(74, 151, 142, 0.13);
+      content: "";
+    }
+
+    .links {
+      display: grid;
+      gap: 12px;
+      padding: 0 22px 24px;
+    }
+
+    .social-link {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      min-height: 68px;
+      align-items: center;
+      padding: 10px 16px 10px 11px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(51, 118, 111, 0.45);
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(23, 59, 63, 0.09);
+    }
+
+    .social-link:focus-visible {
+      outline: 3px solid rgba(51, 118, 111, 0.3);
+      outline-offset: 3px;
+    }
+
+    .social-icon {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 13px;
+      color: #fff;
+      background: var(--ink);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .instagram .social-icon {
+      background: linear-gradient(135deg, #6c4acf, #d04785 56%, #eb9250);
+    }
+
+    .strava .social-icon {
+      background: #fc4c02;
+    }
+
+    .link-copy {
+      padding-left: 13px;
+    }
+
+    .link-title,
+    .link-handle {
+      display: block;
+    }
+
+    .link-title {
+      font-size: 0.94rem;
+      font-weight: 780;
+      letter-spacing: -0.01em;
+    }
+
+    .link-handle {
+      margin-top: 2px;
+      color: var(--ink-soft);
+      font-size: 0.76rem;
+    }
+
+    .arrow {
+      color: var(--sage-dark);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .footer {
+      padding: 20px 24px 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .footer p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.74rem;
+      line-height: 1.5;
+    }
+
+    .footer a {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    @media (max-width: 420px) {
+      .page-shell {
+        padding: 14px 10px;
+      }
+
+      .card {
+        border-radius: 24px;
+      }
+
+      .brand {
+        padding: 28px 22px 23px;
+      }
+
+      .links {
+        padding-inline: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .social-link {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="card">
+      <section class="brand" aria-labelledby="business-name">
+        <div class="logo-placeholder" aria-label="Logo placeholder">
+          <div>
+            <span class="logo-mark">PMG</span>
+            <span class="logo-label">Your logo</span>
+          </div>
+        </div>
+        <p class="eyebrow">Mobile Pet Grooming</p>
+        <h1 id="business-name">Fresh pets.<br />Happy homes.</h1>
+        <p class="intro">Professional, stress-free grooming brought right to your door—so your pet can look and feel their best without leaving home.</p>
+        <span class="service-note">We travel to you</span>
+      </section>
+
+      <nav class="links" aria-label="Social media links">
+        <a class="social-link instagram" href="https://www.instagram.com/steveparker1978/" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+          <span class="social-icon" aria-hidden="true">IG</span>
+          <span class="link-copy">
+            <span class="link-title">Instagram</span>
+            <span class="link-handle">@steveparker1978</span>
+          </span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="social-link x" href="https://x.com/parker1978" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X">
+          <span class="social-icon" aria-hidden="true">X</span>
+          <span class="link-copy">
+            <span class="link-title">X</span>
+            <span class="link-handle">@parker1978</span>
+          </span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="social-link strava" href="https://www.strava.com/athletes/154713263" target="_blank" rel="noopener noreferrer" aria-label="Connect with us on Strava">
+          <span class="social-icon" aria-hidden="true">S</span>
+          <span class="link-copy">
+            <span class="link-title">Strava</span>
+            <span class="link-handle">Follow our adventures</span>
+          </span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
+
+      <footer class="footer">
+        <p>Serving pets at home with patience, care, and a gentle touch.<br /><a href="/">parker1978.com</a> · © <span id="year"></span></p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
