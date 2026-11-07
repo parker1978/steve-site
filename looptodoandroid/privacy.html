@@ -108,7 +108,7 @@
     <a href="/" class="back-link">← Back to Home</a>
 
     <h1>LoopTodo Privacy Policy</h1>
-    <p><em>Effective November 1, 2026. Applies to the LoopTodo Android app (com.parker1978.looptodo).</em></p>
+    <p><em>Effective November 7, 2026. Applies to the LoopTodo Android app (com.parker1978.looptodo).</em></p>
 
     <h2>TL;DR</h2>
     <p>To put it simply:</p>
@@ -116,6 +116,7 @@
       <li>I don't collect data.</li>
       <li>I don't share data.</li>
       <li>LoopTodo has no internet access. Your lists never leave your device unless you choose to share them yourself, for example with Export or AI assist.</li>
+      <li>To check for updates, LoopTodo asks the Google Play Store app on your phone, and Google Play does the checking. None of your lists or settings go with it.</li>
     </ul>
 
     <hr>
@@ -128,11 +129,16 @@
     <ul>
       <li>Collect personal information</li>
       <li>Use analytics, crash reporting or tracking tools</li>
-      <li>Send data to external servers (it doesn't request Android's internet permission at all)</li>
+      <li>Send data to external servers (it doesn't request Android's internet permission at all; update checks go through the Google Play Store app, as explained below)</li>
       <li>Require an account or sign-in</li>
       <li>Display ads or use advertising SDKs</li>
     </ul>
     <p>Everything you enter stays on your device unless you choose to share it yourself, for example with Export or AI assist. It is never sent to anyone by the app, and the app's developer never sees it.</p>
+
+    <h2>Update Checks (Google Play)</h2>
+    <p>From version 2.3.0, LoopTodo uses Google Play's in-app updates library to tell you when a newer version is out. When LoopTodo opens, and when you tap <strong>Settings → Check for update</strong>, it asks the Google Play Store app on your phone whether there's an update. LoopTodo itself still has no internet access: the Play Store app checks with Google, as it does for its own updates.</p>
+    <p>According to Google, this check sends Google information about your device and the version of LoopTodo you have, so Google Play can tell whether an update exists and how big it is. Google says this information is encrypted, isn't shared with third parties, and is deleted after a set time. It's handled by Google under the Google Play Terms of Service and <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>. None of your lists, todos or settings are sent, and the developer receives nothing from it.</p>
+    <p>If you tap <strong>Install</strong>, Google Play downloads and installs the update. <strong>What's new, on Google Play</strong> opens LoopTodo's page in the Play Store app. The <strong>What's new</strong> notes LoopTodo shows after an update are built into the app and need no connection. Only copies of LoopTodo installed from Google Play check for updates this way.</p>
 
     <h2>Backups</h2>
     <p>LoopTodo is excluded from Android cloud backup and device-to-device transfer. If you choose <strong>Settings → Export</strong>, the app writes a backup file to a location you pick with the Android file picker. Where that file goes afterwards (for example a cloud drive you choose) is up to you and covered by that service's privacy policy. <strong>Import</strong> reads a file you choose and replaces the app's data with its contents.</p>
@@ -147,11 +153,14 @@
       <li><strong>Notifications</strong>: to show reminders you set on todos.</li>
       <li><strong>Alarms &amp; reminders</strong>: so reminders fire on time.</li>
       <li><strong>Run at startup</strong>: to restore reminders and scheduled list loops after your phone restarts.</li>
+      <li><strong>Full-screen alerts</strong>: for reminders you set to ring like an alarm, so they can show an alarm screen over the lock screen. On Android 14 and later you allow this yourself; without it, they ring as a pop-up notification.</li>
+      <li><strong>Display over other apps</strong> (called <strong>Appear on top</strong> on some phones): only if you turn it on, so those alarm screens can also open while you're using another app. LoopTodo shows nothing else over other apps.</li>
+      <li><strong>Prevent phone from sleeping</strong>: briefly, so background work such as a scheduled list loop can finish.</li>
     </ul>
     <p>None of these give LoopTodo access to your personal information. AI assist needs no extra permissions: <strong>Share</strong>, <strong>Copy</strong>, <strong>Save file</strong>, <strong>Paste answer</strong> and <strong>Open file</strong> use Android's standard share sheet, clipboard and file picker.</p>
 
     <h2>Data Retention and Deletion</h2>
-    <p>Because no data is collected, nothing is stored outside your device and nothing is retained by the developer. Delete todos or lists in the app, or uninstall LoopTodo (or clear its storage in Android settings), to remove all of its data. Copies you've sent elsewhere yourself, with Export or AI assist, are kept by wherever you sent them, and deleting data in LoopTodo doesn't remove them.</p>
+    <p>Because no data is collected, nothing is stored outside your device and nothing is retained by the developer. What Google Play receives for update checks is kept by Google as described above. Delete todos or lists in the app, or uninstall LoopTodo (or clear its storage in Android settings), to remove all of its data. Copies you've sent elsewhere yourself, with Export or AI assist, are kept by wherever you sent them, and deleting data in LoopTodo doesn't remove them.</p>
 
     <h2>Age Appropriateness</h2>
     <p>LoopTodo contains no objectionable content and is suitable for users of <strong>all ages</strong>. There are no in-app purchases, advertisements, or social features.</p>
