@@ -108,35 +108,47 @@
     <a href="/" class="back-link">← Back to Home</a>
 
     <h1>LoopTodo Privacy Policy</h1>
-    <p><em>Effective November 7, 2026. Applies to the LoopTodo Android app (com.parker1978.looptodo).</em></p>
+    <p><em>Effective November 10, 2026. Applies to the LoopTodo Android app (com.parker1978.looptodo).</em></p>
 
     <h2>TL;DR</h2>
     <p>To put it simply:</p>
     <ul>
-      <li>I don't collect data.</li>
-      <li>I don't share data.</li>
-      <li>LoopTodo has no internet access. Your lists never leave your device unless you choose to share them yourself, for example with Export or AI assist.</li>
+      <li>I don't collect your data, and I never see it.</li>
+      <li>Your lists, todos and settings stay on your device unless you choose to share them yourself, for example with Export or AI assist.</li>
+      <li>From version 3.0.0, LoopTodo uses the internet for one thing: a todo's location. Looking a place up sends what you typed to Google Maps, with roughly where you are if you allow it, and a todo with a location shows a Google map. A todo with no location sends nothing.</li>
       <li>To check for updates, LoopTodo asks the Google Play Store app on your phone, and Google Play does the checking. None of your lists or settings go with it.</li>
     </ul>
 
     <hr>
 
     <h2>Overview</h2>
-    <p>LoopTodo respects your privacy. The app does <strong>not</strong> collect, store, share, or transmit any personal data. Your lists, todos, tags, loop history and settings are kept in the app's private storage on your device. They leave it only if you choose to share them yourself, for example with Export or AI assist.</p>
+    <p>LoopTodo respects your privacy. Its developer does <strong>not</strong> collect, store or receive any of your data. Your lists, todos, tags, loop history and settings are kept in the app's private storage on your device. They leave it only if you choose to share them yourself, for example with Export or AI assist.</p>
+    <p>The one thing LoopTodo sends anywhere itself is what's needed for a todo's location: the place you search for, roughly where you are if you allow it, and the place whose map is shown. That goes to Google Maps and nowhere else, and is explained under <strong>Locations (Google Maps)</strong> below.</p>
 
     <h2>Information Collection and Use</h2>
     <p>LoopTodo does <strong>not</strong>:</p>
     <ul>
       <li>Collect personal information</li>
       <li>Use analytics, crash reporting or tracking tools</li>
-      <li>Send data to external servers (it doesn't request Android's internet permission at all; update checks go through the Google Play Store app, as explained below)</li>
+      <li>Send your lists, todos, tags, loop history or settings to any server</li>
+      <li>Follow where you are, or use your location in the background</li>
       <li>Require an account or sign-in</li>
       <li>Display ads or use advertising SDKs</li>
     </ul>
-    <p>Everything you enter stays on your device unless you choose to share it yourself, for example with Export or AI assist. It is never sent to anyone by the app, and the app's developer never sees it.</p>
+    <p>Everything you enter stays on your device unless you choose to share it yourself, for example with Export or AI assist, or look a location up as described below. The app's developer never sees any of it.</p>
+
+    <h2>Locations (Google Maps)</h2>
+    <p>From version 3.0.0, a todo can have a location, and LoopTodo uses Google Maps to look places up and to show a map. This is the only thing LoopTodo uses the internet for, and it's optional: a todo with no location sends nothing.</p>
+    <p><strong>Looking a place up.</strong> When you type a place or an address under <strong>Location</strong> and tap to look it up, LoopTodo sends what you typed to Google Maps (the Google Maps Platform Places service) to get matching places. It is sent only when you ask for the lookup, never as you type.</p>
+    <p><strong>Your approximate location.</strong> The first time you look a place up, Android asks whether LoopTodo may see your approximate location. If you allow it, LoopTodo reads roughly where the phone is at that moment and sends it to Google Maps with what you typed, so the places near you are found, and uses it on your phone to say how far each one is and list the nearest first. LoopTodo asks for approximate location only, never your precise location. It reads it only while a place is being looked up, never in the background, and doesn't keep it. If you say no, places are still looked up, just not in order of distance, and you can change your answer at any time in Android's settings.</p>
+    <p><strong>The map.</strong> A todo with a looked-up location shows a small Google map of the streets around it. To draw it, LoopTodo asks Google for the map around that place each time the map is shown. Which place it is goes to Google; nothing else about the todo does.</p>
+    <p><strong>Keeping a place up to date.</strong> For a place picked from Google's search, LoopTodo keeps the name and address you picked, Google's ID for the place and its position on the map, all on your device. About every 25 days it asks Google for the place's position again, using only that ID.</p>
+    <p><strong>What Google receives.</strong> As with any request over the internet, Google also receives your device's IP address and some technical details about the device and the app. Each request carries a key that identifies the LoopTodo app, not you: LoopTodo has no accounts, and gives Google no name or email address. Google handles this information under the Google Maps Platform terms and <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>. The developer receives none of it, and sees only how many requests the app makes in total, never what was searched for or by whom.</p>
+    <p><strong>Without Google Maps.</strong> If Google's search can't be reached, LoopTodo asks your phone's own address lookup instead (part of Android, provided by Google on most phones), which is sent the same text and, if you allowed it, the area around you. You can also keep a location exactly as you typed it without looking it up, which sends nothing.</p>
+    <p><strong>Navigating.</strong> Tapping a todo's location lets you pick a maps app on your phone, such as Google Maps or Waze. LoopTodo hands that app the place's address or position so it can take you there. What that app does with it is covered by its own privacy policy.</p>
 
     <h2>Update Checks (Google Play)</h2>
-    <p>From version 2.3.0, LoopTodo uses Google Play's in-app updates library to tell you when a newer version is out. When LoopTodo opens, and when you tap <strong>Settings → Check for update</strong>, it asks the Google Play Store app on your phone whether there's an update. LoopTodo itself still has no internet access: the Play Store app checks with Google, as it does for its own updates.</p>
+    <p>From version 2.3.0, LoopTodo uses Google Play's in-app updates library to tell you when a newer version is out. When LoopTodo opens, and when you tap <strong>Settings → Check for update</strong>, it asks the Google Play Store app on your phone whether there's an update. LoopTodo doesn't contact Google for this itself: the Play Store app checks with Google, as it does for its own updates.</p>
     <p>According to Google, this check sends Google information about your device and the version of LoopTodo you have, so Google Play can tell whether an update exists and how big it is. Google says this information is encrypted, isn't shared with third parties, and is deleted after a set time. It's handled by Google under the Google Play Terms of Service and <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>. None of your lists, todos or settings are sent, and the developer receives nothing from it.</p>
     <p>If you tap <strong>Install</strong>, Google Play downloads and installs the update. <strong>What's new, on Google Play</strong> opens LoopTodo's page in the Play Store app. The <strong>What's new</strong> notes LoopTodo shows after an update are built into the app and need no connection. Only copies of LoopTodo installed from Google Play check for updates this way.</p>
 
@@ -150,6 +162,8 @@
 
     <h2>Permissions</h2>
     <ul>
+      <li><strong>Internet</strong> and <strong>network state</strong>: from version 3.0.0, to look up a todo's location and show its map with Google Maps, as explained above. Nothing else uses them.</li>
+      <li><strong>Approximate location</strong>: from version 3.0.0, and only if you allow it, to find places near you when you look a location up and list the nearest first. Never precise location, and never in the background.</li>
       <li><strong>Notifications</strong>: to show reminders you set on todos.</li>
       <li><strong>Alarms &amp; reminders</strong>: so reminders fire on time.</li>
       <li><strong>Run at startup</strong>: to restore reminders and scheduled list loops after your phone restarts.</li>
@@ -157,10 +171,10 @@
       <li><strong>Display over other apps</strong> (called <strong>Appear on top</strong> on some phones): only if you turn it on, so those alarm screens can also open while you're using another app. LoopTodo shows nothing else over other apps.</li>
       <li><strong>Prevent phone from sleeping</strong>: briefly, so background work such as a scheduled list loop can finish.</li>
     </ul>
-    <p>None of these give LoopTodo access to your personal information. AI assist needs no extra permissions: <strong>Share</strong>, <strong>Copy</strong>, <strong>Save file</strong>, <strong>Paste answer</strong> and <strong>Open file</strong> use Android's standard share sheet, clipboard and file picker.</p>
+    <p>Apart from approximate location, which is yours to allow or refuse, none of these give LoopTodo access to your personal information. To list the maps apps you can navigate with, LoopTodo checks whether Google Maps, Waze or other maps apps are installed; that stays on your phone. AI assist needs no extra permissions: <strong>Share</strong>, <strong>Copy</strong>, <strong>Save file</strong>, <strong>Paste answer</strong> and <strong>Open file</strong> use Android's standard share sheet, clipboard and file picker.</p>
 
     <h2>Data Retention and Deletion</h2>
-    <p>Because no data is collected, nothing is stored outside your device and nothing is retained by the developer. What Google Play receives for update checks is kept by Google as described above. Delete todos or lists in the app, or uninstall LoopTodo (or clear its storage in Android settings), to remove all of its data. Copies you've sent elsewhere yourself, with Export or AI assist, are kept by wherever you sent them, and deleting data in LoopTodo doesn't remove them.</p>
+    <p>The developer collects no data, so nothing is retained by the developer. What Google receives for update checks, and for looking up locations and showing maps, is kept by Google as described above and under Google's Privacy Policy. Delete todos or lists in the app, or uninstall LoopTodo (or clear its storage in Android settings), to remove all of its data. Copies you've sent elsewhere yourself, with Export or AI assist, are kept by wherever you sent them, and deleting data in LoopTodo doesn't remove them.</p>
 
     <h2>Age Appropriateness</h2>
     <p>LoopTodo contains no objectionable content and is suitable for users of <strong>all ages</strong>. There are no in-app purchases, advertisements, or social features.</p>
